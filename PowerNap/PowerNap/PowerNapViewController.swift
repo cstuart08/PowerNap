@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import UserNotifications
 
 class PowerNapViewController: UIViewController {
     
@@ -32,7 +33,8 @@ class PowerNapViewController: UIViewController {
             myTimer.stopTimer()
         } else {
             //stop the timer
-            myTimer.startTimer(3)
+            myTimer.startTimer(10)
+            scheduleLocalAlert(timeInterval: 10)
         }
     }
     
@@ -57,6 +59,7 @@ class PowerNapViewController: UIViewController {
             let timeAsDouble = Double(timeAsString!)!
             
             self.myTimer.startTimer(timeAsDouble * 60)
+            self.scheduleLocalAlert(timeInterval: timeAsDouble * 60)
         }
         alert.addAction(snoozeAction)
         
@@ -69,6 +72,22 @@ class PowerNapViewController: UIViewController {
         present(alert, animated: true, completion: nil)
     }
     
+    func scheduleLocalAlert(timeInterval: TimeInterval) {
+        
+        let content = UNMutableNotificationContent()
+        content.title = "Title"
+        content.subtitle = "Subtitle"
+        content.body = "Body"
+        content.badge = 10
+        content.sound = UNNotificationSound.default
+        
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: timeInterval, repeats: false)
+        
+        let request = UNNotificationRequest(identifier: "Identifier", content: content, trigger: trigger)
+        UNUserNotificationCenter.current().add(request) { (_) in
+            print("User asked to get a local notification.")
+        }
+    }
 }
 
 // MyTimerDelegate Methods
