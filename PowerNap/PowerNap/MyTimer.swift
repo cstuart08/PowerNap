@@ -75,7 +75,7 @@ class MyTimer {
             // otherwise stop timer because it is finished.
             self.timeLeft = nil
             timer?.invalidate()
-            print("Stop Finished.")
+            print("Timer Finished.")
             delegate?.timerHasCompleted()
         }
     }
